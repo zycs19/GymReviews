@@ -24,6 +24,7 @@ const userRoutes = require('./routes/users');
 const MongoStore = require('connect-mongo')(session);
 
 const dbUrl = process.env.DB_URL;
+const PORT = process.env.PORT || 3500
 //const dbUrl = 'mongodb://localhost:27017/gyms'
 
 
@@ -107,6 +108,6 @@ app.use((err, req, res, next) => {
     }
     res.status(statusCode).render('error', { err });
 })
-app.listen(3000, () => {
-    console.log('serving on port 3000');
+app.listen(PORT, () => {
+    console.log('serving on port ', PORT);
 })
