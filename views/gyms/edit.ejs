@@ -1,0 +1,49 @@
+<% layout('./layouts/boilerplate') %>
+
+    <div class="row">
+        <h1 class="text-center">Edit Gym</h1>
+        <div class="col-6 offset-3">
+            <form action="/gyms/<%=gym._id%>/?_method=PUT" method="POST" novalidate class="needs-validation">
+                <div class="mb-3">
+                    <label class="form-label" for="title">Title</label>
+                    <input class="form-control" type="text" id="title" name="gym[title]" value="<%=gym.title%>"
+                        required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="location">Location</label>
+                    <input class="form-control" type="text" id="location" name="gym[location]" value="<%=gym.location%>"
+                        required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="price">Price</label>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="price-label">$</span>
+                        </div>
+                        <input type="text" class="form-control" id="price" aria-label="Amount (to the nearest dollar)"
+                            name="gym[price]" value="<%=gym.price%>" required>
+                        <div class="input-group-append">
+                            <span class="input-group-text">.00</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="image">Image Url</label>
+                    <input class="form-control" type="text" id="image" name="gym[image]" value="<%=gym.image%>"
+                        required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="description">Description</label>
+                    <textarea class="form-control" type="text" id="description" name="gym[description]"
+                        required><%=gym.description%></textarea>
+                </div>
+                <div class="mb-3">
+                    <button class="btn btn-success">Save</button>
+                </div>
+            </form>
+            <form action="/gyms/<%=gym._id%>/?_method=DELETE" method="POST">
+                <button class="btn btn-danger">Delete</button>
+            </form>
+            <a href="/gyms">return to all gyms</a>
+        </div>
+    </div>
