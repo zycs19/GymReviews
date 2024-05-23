@@ -11,12 +11,12 @@ const upload = multer({ storage });
 
 router.route('/')
     .get(catchAsync(gyms.index))
-    .post(isLoggedIn, upload.single('image'), validateGym, catchAsync(gyms.createGym));
+    .post(isLoggedIn, upload.array('image', 100), validateGym, catchAsync(gyms.createGym));
 
 router.get('/new', isLoggedIn, gyms.renderNewForm)
 router.route('/:id')
     .get(catchAsync(gyms.showGym))
-    .put(isLoggedIn, isAuthor, validateGym, catchAsync(gyms.updateGym))
+    .put(isLoggedIn, isAuthor, upload.array('image', 100), validateGym, catchAsync(gyms.updateGym))
     .delete(isLoggedIn, isAuthor, catchAsync(gyms.deleteGym))
 
 

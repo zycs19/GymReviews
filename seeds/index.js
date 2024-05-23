@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 const Gym = require('../models/gyms');
 const cities = require('./cities');
-const { descriptors, places } = require('./seedHelpers');
+const { descriptors, places, gymNames, gymDescriptions } = require('./seedHelpers');
 
-mongoose.connect('mongodb://localhost:27017/gyms');
+mongoose.connect('mongodb+srv://admin:0DZx9eOjTCsCmaGI@cluster0.bbwf7at.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0');
 
 const db = mongoose.connection;
 
@@ -20,12 +20,29 @@ const seedDB = async () => {
         const random1000 = Math.floor(Math.random() * 100);
         const price = Math.floor(Math.random() * 50) * 10;
         const gym = new Gym({
-            author: '664bcac8a6bc4ad1ad6adb4a',
+            author: '664ef653edddad17b39df133',
             location: `${cities[random1000].city}, ${cities[random1000].state}`,
-            title: `${sample(descriptors)} ${sample(places)}`,
-            image: 'https://source.unsplash.com/collection/6800490',
-            description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam temporibus consequatur ratione voluptate ea nihil voluptatum unde, magni modi ab laudantium consequuntur tempora. Harum omnis alias tempora nesciunt dicta rem?',
-            price: price
+            title: `${gymNames[i]}`,
+            description: `${gymDescriptions[i]}`,
+            price: price,
+            images: [
+                {
+                    url: 'https://res.cloudinary.com/dwv5is4e5/image/upload/v1716451850/GymReviews/i1moljthliib5sbdi7ea.jpg',
+                    filename: 'GymReviews/i1moljthliib5sbdi7ea'
+                },
+                {
+                    url: 'https://res.cloudinary.com/dwv5is4e5/image/upload/v1716451892/GymReviews/n8ko3w0ytnyv4yfylql2.jpg',
+                    filename: 'GymReviews/n8ko3w0ytnyv4yfylql2'
+                }
+            ],
+            geometry: {
+                coordinates:
+                    [
+                        cities[random1000].longitude,
+                        cities[random1000].latitude
+                    ],
+                type: 'Point'
+            }
         });
         await gym.save();
     }

@@ -1,42 +1,71 @@
 <% layout('./layouts/boilerplate') %>
     <link rel="stylesheet" href="/stylesheets/stars.css">
 
+
     <div class="row">
         <div class="col-6">
             <div class="card mb-3">
-                <% for(let img of gym.images) {%>
-                    <img class="card-img-top" src="<%=img.url%>" alt="...">
-                    <% } %>
-                        <div class="card-body">
-                            <h5 class="card-title">
-                                <%=gym.title%>
-                            </h5>
-                            <p class="card-text">
-                                <%=gym.description%>
-                            </p>
-                        </div>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item"><b>Price:</b>
-                                <%=gym.price%>
-                            </li>
-                            <li class="list-group-item"><b>Location:</b>
-                                <%=gym.location%>
-                            </li>
-                            <li class="list-group-item"><b>Owned By:</b>
-                                <%=gym.author.username%>
-                            </li>
-                        </ul>
-                        <% if(currentUser && gym.author.equals(currentUser)) {%>
-                            <div class="card-body">
-                                <a class="btn btn-primary" href="/gyms/<%=gym._id%>/edit"> Edit</a>
-                                <form class="d-inline" action="/gyms/<%=gym._id%>/?_method=DELETE" method="POST">
-                                    <button class="btn btn-danger">Delete</button>
-                                </form>
+                <div id="map" style="width: 100%; height: 300px;"></div>
+                <div id="photo-carousel" class="carousel slide">
+                    <% if(gym.images.length===0) {%>
+                        <div class="carousel-inner">
+                            <div class="carousel-item active ">
+                                <img class="d-block w-100" src="/images/gym-default.jpg" alt="">
                             </div>
-                            <% } %>
-                                <div class="card-footer text-muted">
-                                    2 days ago
-                                </div>
+                        </div>
+                        <%}%>
+                            <div class="carousel-inner">
+                                <% gym.images.forEach((img, i)=> { %>
+                                    <div class="carousel-item <%=  i === 0?  'active' : '' %> ">
+                                        <img class="d-block w-100" src="<%=img.url%>" alt="">
+                                    </div>
+                                    <% }) %>
+                            </div>
+
+                            <% if(gym.images.length> 1){ %>
+                                <button class="carousel-control-prev" type="button" data-bs-target="#photo-carousel"
+                                    data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#photo-carousel"
+                                    data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                                <% } %>
+                </div>
+
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <%=gym.title%>
+                    </h5>
+                    <p class="card-text">
+                        <%=gym.description%>
+                    </p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><b>Price:</b>
+                        <%=gym.price%>
+                    </li>
+                    <li class="list-group-item"><b>Location:</b>
+                        <%=gym.location%>
+                    </li>
+                    <li class="list-group-item"><b>Owned By:</b>
+                        <%=gym.author.username%>
+                    </li>
+                </ul>
+                <% if(currentUser && gym.author.equals(currentUser)) {%>
+                    <div class="card-body">
+                        <a class="btn btn-primary" href="/gyms/<%=gym._id%>/edit"> Edit</a>
+                        <form class="d-inline" action="/gyms/<%=gym._id%>/?_method=DELETE" method="POST">
+                            <button class="btn btn-danger">Delete</button>
+                        </form>
+                    </div>
+                    <% } %>
+                        <div class="card-footer text-muted">
+                            2 days ago
+                        </div>
             </div>
         </div>
         <div class="col-6">
@@ -84,12 +113,11 @@
                                         </p>
                                     </h5>
                                     <h5 class="card-subtitle mb-2 text-muted">
-                                        <%console.log(review)%>
-                                            <%if(review.author && review.author.username){%>
-                                                By: <%=review.author.username%>
-                                                    <%} else {%>
-                                                        By: anonymous
-                                                        <%}%>
+                                        <%if(review.author && review.author.username){%>
+                                            By: <%=review.author.username%>
+                                                <%} else {%>
+                                                    By: anonymous
+                                                    <%}%>
                                     </h5>
                                     <p class="card-text">
                                         comment:<%=review.body%>
@@ -109,3 +137,12 @@
                     </ul>
         </div>
     </div>
+
+    <script>
+        const mapToken = '<%-process.env.MAPBOX_TOKEN%>';
+        const geocode = <%-JSON.stringify(gym.geometry.coordinates)%>;
+        const title = <%-JSON.stringify(gym.title)%>;
+        const gyms = <%-JSON.stringify(gym)%>;
+    </script>
+
+    <script src="/javascripts/showPageMap.js"></script>

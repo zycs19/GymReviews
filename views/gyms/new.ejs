@@ -2,7 +2,7 @@
 
     <div class="row">
         <h1 class="text-center">New Gym</h1>
-        <div class="col-6 offset-3">
+        <div class="col-md-6 offset-md-3">
             <form action="/gyms" method="POST" novalidate class="needs-validation" enctype="multipart/form-data">
                 <div class="mb-3">
                     <label class="form-label" for="title">Title</label>
@@ -26,8 +26,8 @@
                     </div>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label" for="image">Image</label>
-                    <input type="file" id="image" name="image" required>
+                    <label for="image" class="form-label">Selete Images</label>
+                    <input class="form-control" type="file" id="image" name="image" multiple>
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="description">Description</label>
@@ -41,5 +41,4 @@
             </form>
             <a href="/gyms">return to all gyms</a>
         </div>
-
     </div>

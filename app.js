@@ -25,7 +25,7 @@ const MongoStore = require('connect-mongo')(session);
 
 const dbUrl = process.env.DB_URL;
 const PORT = process.env.PORT || 3500
-//const dbUrl = 'mongodb://localhost:27017/gyms'
+//const dbUrl = process.env.DB_URL_LOCAL
 
 
 mongoose.connect(dbUrl);
@@ -85,18 +85,16 @@ app.use((req, res, next) => {
     next();
 })
 
-app.get('/fakeUser', async (req, res) => {
-    const user = new User({ email: 'abc@asd.com', username: 'abctest' });
-    const newUser = await User.register(user, 'chicken');
-    res.send(newUser);
 
-})
 
 app.use('/', userRoutes);
 app.use('/gyms', gymRoutes);
 app.use('/gyms/:id/reviews', reviewRoutes);
 
 
+app.get('/', (req, res) => {
+    res.render('home')
+})
 
 app.all('*', (req, res, next) => {
     next(new ExpressError('page not found', 404));

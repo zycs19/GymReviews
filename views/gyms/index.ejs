@@ -1,15 +1,45 @@
 <% layout('./layouts/boilerplate') %>
+    <script>
+        const mapToken = "<%=process.env.MAPBOX_TOKEN%>";
+    </script>
 
+    <div id="map" stype="width:100%; height:900px;"></div>
     <h1>All gyms</h1>
     <div>
         <a href="/gyms/new">Add a new gym</a>
     </div>
 
     <% for (let gym of gyms) {%>
-        <div>
+        <div class="card mb-3">
             <div class="row">
                 <div class="col-md-4">
-                    <img class="img-fluid" alt="" src="<%= gym.image%>">
+                    <div id="photo-carousel-<%=gym._id%>" class="carousel slide">
+
+                        <div class="carousel-inner">
+                            <% if(gym.images.length===0){ %>
+                                <div class="carousel-item active ">
+                                    <img class="d-block w-100" src="/images/gym-default.jpg" alt="" >
+                                </div>
+                                <% } %>
+                                    <% gym.images.forEach((img, i)=> { %>
+                                        <div class="carousel-item <%=  i === 0?  'active' : '' %> ">
+                                            <img class="d-block w-100" src="<%=img.url%>" alt="" >
+                                        </div>
+                                        <% }) %>
+                        </div>
+                        <% if(gym.images.length> 1){ %>
+                            <button class="carousel-control-prev" type="button"
+                                data-bs-target="#photo-carousel-<%=gym._id%>" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button"
+                                data-bs-target="#photo-carousel-<%=gym._id%>" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                            <% } %>
+                    </div>
                 </div>
                 <div class="col-md-8">
                     <div class="card-body">
@@ -30,3 +60,9 @@
             </div>
         </div>
         <% }%>
+<!-- <script>
+const gymsdata = { features: <%- JSON.stringify(gyms) %>};
+</script> -->
+        
+
+            <script src="/javascripts/clusterMap.js"></script>
